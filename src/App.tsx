@@ -1,15 +1,17 @@
-import "./styles/theme.css";
-import "./styles/global.css";
-
 import { Heading } from "./components/Heading";
 import { ContainerCompo } from "./components/Container";
+import { Logo } from "./components/Logo";
+
+import "./styles/theme.css";
+import "./styles/global.css";
 
 export function App() {
   return (
     <>
       <ContainerCompo>
-        <Heading>Logo</Heading>
+        <Logo />
       </ContainerCompo>
+
       <ContainerCompo>
         <Heading>Menu</Heading>
       </ContainerCompo>
