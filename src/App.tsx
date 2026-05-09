@@ -1,6 +1,7 @@
 import { ContainerCompo } from "./components/Container";
 import { Logo } from "./components/Logo";
 import { Menu } from "./components/Menu";
+import { CountDown } from "./components/CountDown";
 
 import "./styles/theme.css";
 import "./styles/global.css";
@@ -14,6 +15,10 @@ export function App() {
 
       <ContainerCompo>
         <Menu />
+      </ContainerCompo>
+
+      <ContainerCompo>
+        <CountDown />
       </ContainerCompo>
     </>
   );
