@@ -5,7 +5,7 @@ import type { TaskModel } from "./TaskModels";
 export type TaskStateModel = {
   tasks: TaskModel[]; //historico, MainForm
   secondsRemaining: number; //home, CountDown, historico, mainform, button
-  formatedSecondsRemaining: string; // titulo, countDown
+  formattedSecondsRemaining: string; // titulo, countDown
   activeTask: TaskModel | null; //CountDown, historico, mainform, button
   currentCycle: number; // vai de 1 a 8 (as bolinhas de ciclos)
   config: {
