@@ -9,12 +9,14 @@ import { UseTaskContext } from "../../contexts/TaskContext/useTaskContext";
 
 import { getNextCycle } from "../../utils/getNextCycle";
 import { getNextCycleType } from "../../utils/getNextCycleType";
-
-import { formatSecondsToMinutes } from "../../utils/formatSecondsToMinutes";
+import { TaskActionsTypes } from "../../contexts/TaskContext/taskAction";
+import { Tips } from "../Tips";
+import { showMessage } from "../../adapters/showMessage";
 
 export function MainForm() {
-  const { state, setState } = UseTaskContext();
+  const { state, dispatch } = UseTaskContext();
   const taskNameInput = useRef<HTMLInputElement>(null);
+  const lastTaskName = state.tasks[state.tasks.length - 1]?.name || "";
 
   // ciclos
   const nextCycle = getNextCycle(state.currentCycle);
@@ -28,7 +30,8 @@ export function MainForm() {
     const taskName = taskNameInput.current.value.trim();
 
     if (!taskName) {
-      alert("Digite o nome da tarefa");
+      showMessage.dismiss();
+      showMessage.warning("Digite o nome da tarefa");
       return;
     }
 
@@ -42,39 +45,17 @@ export function MainForm() {
       type: nextCyleType,
     };
 
-    const secondsRemaining = newTask.duration * 60;
+    // const secondsRemaining = newTask.duration * 60;
 
-    setState((prevState) => {
-      return {
-        ...prevState,
-        config: { ...prevState.config },
-        activeTask: newTask,
-        currentCycle: nextCycle,
-        secondsRemaining, // Conferir
-        formattedSecondsRemaining: formatSecondsToMinutes(secondsRemaining), // Conferir
-        tasks: [...prevState.tasks, newTask],
-      };
-    });
+    dispatch({ type: TaskActionsTypes.START_TASK, payload: newTask });
+    showMessage.dismiss();
+    showMessage.success("Tarefa iniciada");
   }
 
-  function handleInterruptTask(
-    e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
-  ) {
-    e.preventDefault();
-    setState((prevState) => {
-      return {
-        ...prevState,
-        activeTask: null,
-        secondsRemaining: 0,
-        formattedSecondsRemaining: "00:00",
-        tasks: prevState.tasks.map((task) => {
-          if (prevState.activeTask && prevState.activeTask?.id === task.id) {
-            return { ...task, interruptDate: Date.now() };
-          }
-          return task;
-        }),
-      };
-    });
+  function handleInterruptTask() {
+    showMessage.dismiss();
+    showMessage.error("Tarefa interrompida");
+    dispatch({ type: TaskActionsTypes.INTERRUPT_TASK });
   }
 
   return (
@@ -87,11 +68,12 @@ export function MainForm() {
           placeholder="Digite algo"
           ref={taskNameInput}
           disabled={!!state.activeTask} // ativa e desativa o input
+          defaultValue={lastTaskName}
         />
       </div>
 
       <div className="formRow">
-        <p>Próximo intervalo é de 25min</p>
+        <Tips />
       </div>
 
       {state.currentCycle > 0 && (
