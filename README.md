@@ -30,9 +30,3 @@ O app permite iniciar ciclos de foco, alternar entre pausas curtas e longas, aco
 - ESLint
 - Prettier
 
-## Como executar o projeto
-
-### 1. Clone o repositório
-
-```bash
-git clone https://github.com/seu-usuario/chronos-pomodoro.git
